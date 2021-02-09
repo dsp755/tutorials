@@ -1,0 +1,18 @@
+1. в файле app.js экспортируем переменную app
+
+module.exports = app;
+
+2. в папке bin нашего приложения создаем файл www
+
+#!/usr/bin/env node
+
+const app = require('../app');
+const port = 3000;
+
+app.listen(port, () => console.log(`listening on port ${port}`));
+
+3. в package.json создаем новые скрипты
+
+"start": "node ./bin/www",
+"dev": "nodemon ./bin/www"
+

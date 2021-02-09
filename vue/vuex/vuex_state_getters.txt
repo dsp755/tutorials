@@ -1,0 +1,80 @@
+----------------------------------- GETTERS --------------------------------------------
+
+1. в store.js внутри export default new Vuex.Store({ наряду с state, mutations, actions мы можем добавить getters: { ... }
+
+в getters добавляем переменную и функцию по следующему образцу:
+
+  getters: {
+    catLength: state => {
+      return state.categories.length
+    }
+  }
+
+Теперь мы можем использовать catLength из любого места приложения следующим образом:
+
+this.$store.getters.catLength
+
+
+ВСТАВИТЬ ГЕТТЕР В ГЕТТЕР
+
+  state: {
+    todos: [
+      { id: 1, text: '...', done: true },
+      { id: 2, text: '...', done: false },
+      { id: 3, text: '...', done: true },
+      { id: 4, text: '...', done: false }
+    ]
+  }
+
+  getters: {
+    doneTodos: state => state.todos.filter(todo => todo.done),
+    activeTodosCount: (state, getters) => {
+      return state.todos.length - getters.doneTodos.length
+    }  ИЛИ   state.todos.filter(todo => !todo.done).length
+
+
+ДИНАМИЧЕСКИЙ ГЕТТЕР
+
+В СТОРЕ:
+
+    events: [
+      { id: 1, text: '...', done: true },
+      { id: 2, text: '...', done: false },
+      { id: 3, text: '...', done: true },
+      { id: 4, text: '...', done: false }
+    ]
+
+getters: {
+  getEventById: state => id => {
+    return state.events.find(event => event.id === id)
+  }
+}
+
+В КОМПОНЕНТЕ:
+
+export default {
+  computed: {
+    getEvent() {
+      return this.$store.getters.getEventById
+    },
+
+ВСТАВЛЯЕМ В ТЕМПЛЕЙТ 
+
+  <p>{{ getEvent(1) }}</p>
+
+
+-------------------------------- mapGetters ------------------------------------------
+
+<script>
+import { mapState, mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    getEvent() {
+      ...mapGetters(['getEventById'])
+      ...mapState(['user', 'categories'])
+    },
+
+ВСТАВЛЯЕМ В ТЕМПЛЕЙТ 
+
+  <p>{{ getEventById(1) }}</p>

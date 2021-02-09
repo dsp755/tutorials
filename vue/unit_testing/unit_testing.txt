@@ -1,0 +1,183 @@
+======================================= ОСНОВЫ ===============================================
+
+npm run test:unit
+
+1. устанавливаем в проект jest
+
+2. в корневом каталоге создается папка tests\unit, в ней создаем
+файл <<название_компонента>>.spec.js (напр. MyComponent.spec.js)
+
+3. в этом файле импортируем тестируемый компонент и метод mount из jest
+
+import MyComponent from '@/components/MyComponent.vue'
+import { mount } from '@vue/test-utils'
+
+4. вызываем метод describe, который принимает первым аргументом название тестируемого файла, 
+а вторым - функцию, в которой будет выполняться само тестирование.
+
+describe('AppHeader', () => {
+  test('If user is not logged in, do not show logout button', () => {
+    const wrapper = mount(AppHeader)
+    expect(wrapper.find('button').isVisible()).toBe(false)
+  })
+
+Метод для тестирования - test или it. Он принимает первым аргументом строку с описанием тестирования, а вторым - функцию с механизмом тестирования.
+
+test('строка с описанием тестирования', () => { функция с механизмом тестирования })
+
+Тестируется компонент, который мы монтируем с помощью метода mount(<<имя компонента, который мы импортировали в начале файла>>).
+
+Сам механизм тестирования описан в строке, начинающейся с метода expect.
+
+
+ПРИМЕРЫ С ASYNC
+
+1.  test('If user is logged in, show logout button', async () => {
+    const wrapper = mount(AppHeader)
+    await wrapper.setData({ loggedIn: true })
+
+    expect(wrapper.find('button').isVisible()).toBe(true)
+  })
+
+2.  test('If user is logged in, show logout button', async () => {
+    const wrapper = mount(AppHeader)
+    wrapper.setData({ loggedIn: true })
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('button').isVisible()).toBe(true)
+  })
+
+
+====================================== МЕТОДЫ ===============================================
+
+await wrapper.vm.$nextTick()
+
+expect(wrapper.find('button').isVisible()).toBe(false)
+
+wrapper.find('button').trigger('click')
+
+wrapper.trigger('submit')		// submit a form on a given component
+
+expect(wrapper.html()).toContain('<span>0</span>')
+
+expect(randomNumber).toBeGreaterThanOrEqual(1)
+
+expect(randomNumber).toBeLessThanOrEqual(10)
+
+wrapper.setData({ loggedIn: true })
+
+expect(wrapper.emitted('formSubmitted')).toBeTruthy()
+expect(wrapper.emitted('formSubmitted').length).toBe(1)
+expect(wrapper.emitted('formSubmitted')[1]).toEqual([123])
+
+
+
+======================================= MOUNT ===============================================
+
+1.    const wrapper = mount(RandomNumber)
+
+2.    const wrapper = mount(RandomNumber, {
+      propsData: {
+        min: 200,
+        max: 300
+      }
+    })
+
+3.  const wrapper = mount(LoginForm)
+    const input = wrapper.find('input[data-testid="name-input"]')
+
+    input.setValue('Some Name')
+
+    В этом примере в поле ввода формы input будет введено Some Name
+
+
+
+======================================== VUEX ================================================
+
+import <<имя компонента>> from '@/components/<<имя компонента>>';
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import Vuex from 'vuex'
+
+const localVue = createLocalVue()
+localVue.use(Vuex)
+
+
+Затем либо глобально один на все, либо в каждом тесте прописываем разные сторы.
+
+     let store = new Vuex.Store({
+      state: {
+        project_name: 'null'
+      },
+      modules: {
+        completions: {
+          namespaced: true,
+          state: {
+            user_completions_hashes: {
+              'project': {
+                '1': true
+              },
+            },
+          },
+        },
+        users: {
+          namespaced: true,
+          state: {
+            user_id: '1'
+          },
+        }
+      }
+    })
+
+====================================== testing API calls ======================================
+
+1. Кроме основных импортов импортируем еще функцию, которая делает запрос к API
+
+import { getMessage } from '@/services/axios.js'
+
+Также устанавливаем и импортируем библиотеку flush-promises, которая резолвит все промисы в компоненте.
+
+import flushPromises from 'flush-promises'
+
+2. Под импортами указываем джесту на модуль, который он будет мокать (т.е. он будет эмулировать поведение импортируемой функции)
+
+jest.mock('@/services/axios.js')
+
+
+3. В самом тесте мы эмулируем запрос к API с помощью следующего метода
+
+getMessage.mockResolvedValueOnce({ text: 'Hello from the db!' })
+
+в качестве аргумента мы вставляем ему тот ответ, который должен был бы прийти от реальной API.
+
+ЛИБО
+
+getMessage.mockRejectedValueOnce('Oops! Something went wrong.')
+
+
+4. Далее мы монтируем компонент
+
+const wrapper = mount(MessageDisplay)
+
+
+5. Т.к. тесты не сработают, если все промисы не будут разрешены (resolved), нам нужно резолвить все промисы до запуска тестирования. Для этого импортируем библиотеку flush-promises
+
+import flushPromises from 'flush-promises'
+
+
+6. После монтирования компонента резолвим все промисы 
+
+await flushPromises()
+
+7. В самом тесте можно проверить, сколько раз совершилось обращение к API
+
+expect(getMessage).toHaveBeenCalledTimes(1)
+
+8. Чтобы сбросить количество обращений к API, перед нашими тестированиями, т.е. перед descrive, нужно вставить такой хук
+
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
+этот хук обнуляет все моки перед каждым тестированием.
+
+

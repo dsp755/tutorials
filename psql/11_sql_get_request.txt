@@ -1,0 +1,42 @@
+1. создаем файл app.js в корне приложение
+
+2. в файл index.js, в котором мы вызываем функцию pool, добавляем экспорт этой функции
+
+module.exports = pool;
+
+затем копируем метод pool.query в наш новый файл app.js
+
+
+3. в файле app.js вставляем этот метод внутрь коллбэка метода app.get и пишем метод listen, 
+чтобы запустить наше приложение на определенном порте
+
+const express = require('express');
+const pool = require('./db');
+
+const app = express();
+
+app.get('/monsters', (request, response) => {
+  pool.query('SELECT * FROM monsters', (err ,res) => {
+    if (err) return console.log(err);
+  
+    console.log(res.rows);
+  });
+});
+
+const port = 3000;
+
+app.listen(port, () => console.log(`listening on port ${port}`));
+
+
+4. в консоли запускаем node app.js
+
+listening on port 3000
+
+в браузере делаем запрос на localhost:3000/monsters (этот путь описан в нашем app.get методе)
+
+[
+  { id: 1, name: 'Fluffy', personality: 'aggressive' },
+  { id: 2, name: 'Noodles', personality: 'impatient' },
+  { id: 3, name: 'Rusty', personality: 'passionate' }
+]
+

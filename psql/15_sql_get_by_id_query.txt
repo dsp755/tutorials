@@ -1,0 +1,16 @@
+app.get('/monsters/:id', (request, response, next) => {
+  const { id } = request.params;
+
+  pool.query('SELECT * FROM monsters WHERE id = $1', [id], (err, res) => {
+    if (err) return next(err);
+
+    response.json(res.rows);
+  })
+});
+
+
+$1 в данном примере обзначает первый индекс из массива, который идет вторым аргументом 
+в нашем запросе, т.е. [id]
+
+СТОИТ ОБРАТИТЬ ВНИМАНИЕ, ЧТО ИСПОЛЬЗУЕТСЯ ИНДЕКС НЕ 0, КАК В JS, А ИМЕННО 1
+

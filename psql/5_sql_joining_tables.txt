@@ -1,0 +1,23 @@
+1. JOIN 
+
+Соединить таблицы allies и elves, основываясь на совпадении межу allies.elf и elves.name
+
+SELECT * FROM allies JOIN elves ON allies.elf = elves.name;
+
+ wizard  |   elf   |  name   | speed 
+---------+---------+---------+-------
+ Saruman | Legolas | Legolas |    10
+ Gendalf | Legolas | Legolas |    10
+ Gendalf | Arwen   | Arwen   |     9
+ Saruman | Elrond  | Elrond  |     5
+
+
+SELECT * FROM guardians JOIN hobbits ON guardians.hobbit = hobbits.name JOIN elves ON guardians.elf = elves.name;
+
+   elf   | hobbit | name  | personality |  name   | speed 
+---------+--------+-------+-------------+---------+-------
+ Legolas | Frodo  | Frodo | caruful     | Legolas |    10
+ Arwen   | Sam    | Sam   | brave       | Arwen   |     9
+ Elrond  | Bilbo  | Bilbo | greedy      | Elrond  |     5
+
+

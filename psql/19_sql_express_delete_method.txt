@@ -1,0 +1,17 @@
+1. в файл /routes/monsters.js добавляем запрос 
+
+router.delete('/:id', (request, response, next) => {
+  const { id } = request.params;
+
+  pool.query('DELETE FROM monsters WHERE id = $1', [id], (err, res) => {
+    if (err) return next(err);
+  });
+
+  response.redirect('/monsters');
+});
+
+
+2. теперь мы можем удалить запись из таблицы методом DELETE
+
+curl -H 'Content-Type: application/json' -X DELETE localhost:3000/monsters/5   
+

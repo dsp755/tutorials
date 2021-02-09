@@ -1,0 +1,27 @@
+1. чтобы спрятать данные о подключении, включая пароль, создаем папку secrets, и в ней отдельный модуль,
+который включает в себя и экспортирует объект с нужными данными.
+
+module.exports = {
+  user: 'node_user',
+  host: 'localhost',
+  database: 'monstersdb',
+  password: '1',
+  port: 5432
+};
+
+
+2. в файле подключения к базе данных импортируем наш секретный файл и используем его переменные.
+
+const { Pool } = require('pg');
+const { user, host, database, password, port } = require('../secrets/db_configuration')
+
+const pool = new Pool({ user, host, database, password, port });
+
+pool.query('SELECT * FROM monsters', (err ,res) => {
+  if (err) return console.log(err);
+
+  console.log(res);
+});
+
+
+3. добавляем папку secrets/ наряду с node_modules/ в .gitignore

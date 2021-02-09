@@ -1,0 +1,17 @@
+npm i vuejs-datepicker
+
+В script нужного компонента импортируем
+import Datepicker from 'vuejs-datepicker'
+
+Добавляем его в компоненты
+export default {
+  components: {
+    Datepicker
+  },
+
+Вставляем в темплейт
+
+<datepicker v-model="<<значение из data>>" placeholder="Select a date"/>
+
+значение из data поменяется на выбранную в дейтпикере дату
+

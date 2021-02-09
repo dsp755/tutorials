@@ -1,0 +1,57 @@
+1. в корне нашего приложения создаем папку routes
+
+
+2. в этой папке создаем файл monsters.js
+
+в этом файле импортируем и вызываем функцию Routes
+
+const { Router } = require('express');
+const router = Router();
+
+и переносим из файла app.js импорт функции pool (но учитываем, что теперь нужны две точки в пути)
+
+const pool = require('../db');
+
+
+3. из файла app.js берем все app.get методы с одной точкой вхождения (/monsters) и помещаем
+ее в наш новый файл
+
+заменяем все переменные app на router
+
+заменяем все пути /monsters на /
+
+в конце файла экспортируем router
+
+module.exports = router;
+
+По сути таким образом мы вынесли все express-запросы для пути /monsters в отдельный файл, оставив
+в файле app.js только его главные функции.
+
+ВЕСЬ ФАЙЛ /routes/monsters.js
+
+
+const { Router } = require('express');
+const pool = require('../db');
+
+const router = Router();
+
+router.get('/', (request, response, next) => {
+  pool.query('SELECT * FROM monsters ORDER BY id ASC', (err ,res) => {
+    if (err) return next(err);
+  
+    response.json(res.rows);
+  });
+});
+
+router.get('/:id', (request, response, next) => {
+  const { id } = request.params;
+
+  pool.query('SELECT * FROM monsters WHERE id = $1', [id], (err, res) => {
+    if (err) return next(err);
+
+    response.json(res.rows);
+  })
+});
+
+module.exports = router;
+

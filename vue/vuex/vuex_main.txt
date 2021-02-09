@@ -1,0 +1,67 @@
+1. создаем в src файл store.js
+
+в файле вводим сниппет vstore
+
+
+2. в main.js импортируем
+
+import store from './store'
+
+а в объект new Vue ({
+
+добавляем store :
+
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#app')
+
+
+3. теперь из любого компонента можно обращаться к vuex через объект $store или this.$store
+
+
+4. (ДЛЯ БОЛЕЕ КРАТКОЙ ВЕРСИИ СМ. НИЖЕ) в любом компоненте, чтобы привязать сущность из $store к переменной, создаем подобную функцию в computed
+
+export default {
+  computed: {
+    userName() {
+      return this.$store.state.user.name
+    }
+  }
+}
+
+Теперь можно обращаться к этой сущности через userName или this.userName
+
+5. MAPSTATE
+
+(БОЛЕЕ КРАТКАЯ ВЕРСИЯ C mapState) в любом компоненте 
+импортируем { mapState } from 'vuex'
+
+<script>
+import { mapState } from 'vuex'
+
+В computed вставляем mapState по следующему образцу:
+
+export default {
+  computed: mapState({
+    user: 'user',		// тут объект user
+    categories: 'categories'	// тут массив со строками
+  })
+}
+
+Теперь мы можем обращаться к этим сущностям, находящимся в store, из любого компонента как user.name, user.id, categories[0] и т.д.
+
+6. MAPSTATE     САМАЯ КРАТКАЯ ВЕРСИЯ
+
+export default {
+  computed: {
+    localComputed() {
+      return something
+    },
+    ...mapState(['user', 'categories'])
+  }
+}
+
+
+

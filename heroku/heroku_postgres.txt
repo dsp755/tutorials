@@ -1,0 +1,9 @@
+1. залогиниться в хероку
+
+heroku login
+
+2. узнать url базы данных проекта на хероку
+
+heroku config:get DATABASE_URL -a <your_heroku_app_name>
+
+3. 

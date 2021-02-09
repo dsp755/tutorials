@@ -1,0 +1,26 @@
+1. npm init -y
+2. npm i nodemon -D
+3. npm i express body-parser pg
+4. создать файл monsters.sql
+
+5. в файле monsters.sql
+
+CREATE TABLE monsters(
+  id serial,
+  name character varying(50),
+  personality character varying(50)
+);
+
+id serial - сериал создает числовое значение, которое будет автоматически
+увеличиваться с каждым новым вводом/созданием строки.
+
+6. createdb -U postgres monstersdb
+7. psql -U postgres monstersdb
+8. CREATE USER node_user WITH SUPERUSER PASSWORD '1';
+
+npm run configure
+
+- этой командой выполняется скрипт из файла ./bin/sql/configure.sh
+т.е. создается и наполняется база данных
+
+

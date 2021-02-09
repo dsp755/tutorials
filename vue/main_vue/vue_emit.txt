@@ -1,0 +1,126 @@
+ПЕРЕДАЧА ДАННЫХ ИЗ КОМПОНЕНТА ВЫШЕ ПО ДЕРЕВУ $emit
+
+Vue components have an $emit() function 
+that allows passing custom events up the component tree.
+
+Generally, you use $emit() to notify the parent component that something has changed. 
+
+1. Здесь с помощью функции this.$emit('notify') мы передаем событие 'notify'
+выше в дерево компонентов, а остальные компоненты могут слушать это событие
+с помощью аттрибута v-on:notify="..."
+
+  <<какой-то компонент, например my-component>>
+  mounted: function() {
+    // `$emit()` sends an event up the component tree. The parent
+    // can listen for the 'notify' event using 'v-on:notify'
+    this.$emit('notify');
+  },
+
+2. В другом компоненте мы вставляем наш компонент my-component 
+и передаем ему аргументом v-on:notify="<<название функции или целиком условие>>"
+
+    <<родительский компонент для нашего компонента my-component>>
+
+(пример 1) Выполнится условие "show = true"
+
+    <div>
+      <my-component v-on:notify="show = true"></my-component>
+      <div v-if="show">Notified</div>
+    </div>
+
+(пример 2) Вызовется функция translateText
+
+    <template>
+  <div id="app">
+    <my-component v-on:notify="translateText" />
+  </div>
+</template>
+
+  methods: {
+    translateText: function (text) {
+      alert(text)
+    }
+  }
+
+3. Передача события с АРГУМЕНТОМ
+
+Допустим, в нашем дочернем компоненте:
+
+	в template есть форма <form v-on:submit="formSubmit"> 
+	в data есть textToTranslate: 1
+
+В темплейте нашего компонента у нас есть следующая форма:
+
+  <form v-on:submit="formSubmit"> ... </form>
+
+Таким образом, в методах мы можем эмитнуть событие formSubmit с 
+аргументом textToTranslate:
+
+  methods: {
+    formSubmit (e) {
+      this.$emit('formSubmit', this.textToTranslate)
+      e.preventDefault()
+    }
+  }
+
+В нашем родительском компоненте мы вставляем наш дочерний компонент с 
+v-on:formSubmit="<<какая-то функция, напр. translateText>>":
+
+<template>
+  <div id="app">
+    <TranslateForm v-on:formSubmit="translateText" />
+</template>
+
+Тогда в методах этого родительского компонента мы можем объявить функцию
+translateText и передать в нее аргументом ту переменную или функцию, которая 
+передалась вторым аргументом в нашем прошлом пункте:
+
+  methods: {
+    translateText: function (text) {
+      alert(text)
+    }
+  }
+
+где text = textToTranslate из дочернего компонента
+
+ this.$emit('formSubmit', this.textToTranslate)
+
+ЛИБО В РОДИТЕЛЬСКОМ КОМПОНЕНТЕ в V-ON МЫ МОЖЕМ ПЕРЕДАТЬ АРГУМЕНТ ЧЕРЕЗ $event:
+
+Vue.component('input-name', {
+  data: () => ({ name: 'World' }),
+  // When you click the "Update" button, Vue will emit an event `update`
+  // to the parent, with the current state of 'name'.
+  template: `
+    <div>
+      <input type="text" v-model="name">
+      <button v-on:click="$emit('update', name)">
+        Update
+      </button>
+    </div>
+  `
+});
+
+const app = new Vue({
+  data: () => ({ name: 'World' }),
+  // To listen to the 'update' event, you create the `input-name`
+  // component with a `v-on:update` attribute. `$event` contains
+  // the value of the 2nd parameter to `$emit()`.
+  template: `
+    <div>
+      <div>
+        <input-name v-on:update="setName($event)"></input-name>
+      </div>
+      <h1>Hello, {{name}}</h1>
+    </div>
+  `,
+  methods: {
+    // Define a method that Vue will call to handle the 'update' event.
+    setName: function(v) {
+      this.name = v;
+    }
+  }
+});
+app.$mount('#content');
+
+

@@ -1,0 +1,38 @@
+1. в папке проекта mkdir bin (создаем папку bin)
+2. mkdir bin/configuredb.sh  (создаем конфигурационный файл для базы данных)
+3. в начале файла пишем    #!/bin/bash   это указание, что файл должен исполняться
+через bash
+4. далее в этом файле пишем команды, которые баш будет выполнять при запуске файла
+
+dropdb -U node_user monstersdb
+createdb -U node_user monstersdb
+
+5. в package.json в scripts добавляем скрипт "configure": "./bin/configuredb.sh"
+
+6. psql -U node_user monstersdb  < ./bin/sql/monsters.sql
+
+ВЕСЬ ФАЙЛ =
+
+#!/bin/bash
+
+database="monstersdb"
+
+echo "Configuring database: $database"
+
+dropdb -U node_user monstersdb
+createdb -U node_user monstersdb
+
+psql -U node_user monstersdb <./bin/sql/monsters.sql
+
+echo "$database database configured"
+
+7. меняем тип файла configure.sh на executable
+
+chmod +x configuredb.sh 
+
+теперь при команде ls -a у этого файла в первой строчке добавляется x, что значит, что это executable
+
+-rwxr-xr-x  1 dsp755  staff  222 Jan 31 21:38 configuredb.sh
+
+8. в терминале из папки проекта запускаем npm run configure
+

@@ -1,0 +1,47 @@
+1. добавляем метод post в наш файл /routes/monsters.js
+
+router.post('/', (request, response) => {
+  const { name, personality } = request.body;
+
+  pool.query(
+    'INSERT INTO monsters(name, personality) VALUES($1, $2)', 
+    [name, personality],
+    (err, res) => {
+      if (err) return next(err);
+    }
+  );
+});
+
+
+2. импортируем в файл app.js модуль body-parser
+
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
+
+3. теперь можем посылать post-запросы на наше приложение. например, с помощью curl
+
+curl -H "Content-Type: application/json" -X POST -d '{"name": "alexey", "personality": "calm"}' 'localhost:3000/monsters'
+
+
+4. express REDIRECT
+
+чтобы при отправке post-запроса показать изменения в таблице, можно после запроса в коллбеке вызвать
+метод redirect
+
+
+router.post('/', (request, response) => {
+  const { name, personality } = request.body;
+
+  pool.query(
+    'INSERT INTO monsters(name, personality) VALUES($1, $2)', 
+    [name, personality],
+    (err, res) => {
+      if (err) return next(err);
+
+      response.redirect('/monsters');
+    }
+  );
+});
+

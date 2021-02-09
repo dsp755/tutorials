@@ -1,0 +1,28 @@
+------------------------------------ ACTIONS--------------------------------------------
+				ACTIONS АСИНХРОННЫ
+
+1. ACTIONS выглядит следующим образом:
+
+updateCount({ state, commit }, value) {
+  if (state.user) {
+    commit('INCREMENT_COUNT', value)
+  }
+}
+
+
+{ state, commit } - context object (контекстный объект). Он содержит в себе все свойства 
+vuex store, такие как state, commit, getters.
+
+В данном случае мы деструктурируем этот контекстный объект, чтобы извлечь из него 
+только state и commit
+
+МЕТОД В КОМПОНЕНТЕ ДЛЯ ВЫЗОВА ACTIONS
+
+actions в компоненте вызываются с помощью метода dispatch
+
+methods: {
+  incrementCount() {
+    this.$store.dispatch('updateCount', this.<< переменная из data >>)
+  }
+}
+
