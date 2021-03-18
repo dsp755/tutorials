@@ -1,0 +1,18 @@
+1. В react native есть специфичные для платформы компоненты.
+
+Например, для Android кроме TouchableOpacity есть схожий компонент с отличающейся анимацией нажатия - TouchableNativeFeedback
+
+Чтобы TouchableOpacity автоматически заменялся на TouchableNativeFeedback для Android, но оставался TouchableOpacity для IOS,
+мы можем воспользоваться компонентом Platform
+
+import { Text, View, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
+
+const Wrapper = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
+
+Теперь вместо <TouchableOpacity> мы можем использовать <Wrapper>
+
+
+2. Также в зависимости от платформы мы можем менять стили:
+
+backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : THEME.RED_COLOR,
+

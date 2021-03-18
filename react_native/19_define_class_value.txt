@@ -1,0 +1,12 @@
+1. Значение класса можно выставлять в зависимости от условия: 
+
+import { Text, View, StyleSheet, Platform } from 'react-native';
+
+navbar: {
+  backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : THEME.RED_COLOR,
+}
+
+2. Стиль элемента в зависимости от Platform.select
+
+<View style={{...styles.navbar, ...Platform.select({ ios: styles.navbar1, android: styles.navbar2 })}}></View>
+

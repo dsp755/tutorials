@@ -1,0 +1,36 @@
+1. TouchableOpacity
+
+Самый простой пример взаимодействия с элементами интерфейса с помощью нажатия - компонент TouchableOpacity.
+Он добавляет анимацию 
+
+Сначала импортируем этот компонент в наш файл, а далее оборачиваем в него те элементы, которые он должен обрабатывать.
+
+import React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+
+export const Todo = ({ todo }) => (
+    <TouchableOpacity>
+      <View style={styles.todo}>
+          <Text style={styles.text}>{ todo.title }</Text>
+      </View>
+    </TouchableOpacity>
+);
+
+АТТРИБУТЫ
+
+У данного компонента, кроме прочих, есть аттрибут activeOpacity. Он принимает на вход числа:
+
+activeOpacity={0.4}
+
+
+2. onPress и onLongPress
+
+Многие компоненты принимают в качестве аттрибута onPress и onLongPress.
+
+Пример:
+
+onLongPress={() => removeTodo(todo.title)}
+
+В фигурных скобках мы должны указывать именно указание на функцию, а не ее вызов, иначе она вызовется сразу после загрузки страницы.
+Т.е. мы можем написать onLongPress={removeTodo}  или onLongPress={() => removeTodo()}, но !!! не можем написать onLongPress={removeTodo()} !!!
+

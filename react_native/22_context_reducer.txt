@@ -1,0 +1,50 @@
+1. Пример компонента TodoState (файл стейта, в котором уже содержится context):
+
+import React, { useContext, useReducer } from 'react'
+import { ADD_TODO, REMOVE_TODO } from '../types'
+import { todoReducer } from './todoReducer'
+
+export const TodoContext = React.createContext()
+
+export const TodoState = ({ children }) => {
+ 
+  const initialState = { todos: [] }
+  const [state, dispatch] = useReducer(todoReducer, initialState)
+
+  const addTodo = title => {
+    dispatch({ type: ADD_TODO, title: title })
+  }
+
+  return (
+    <TodoContext.Provider value={ {todos: state.todos, addTodo: addTodo} } >
+      {children}
+    </TodoContext.Provider>
+  )
+}
+
+
+2. Пример файла todoReducer:
+
+import { ADD_TODO } from '../types'
+
+const handlers = {
+  [ADD_TODO]: (state, action) => (
+    { ...state, todos: [ ...state.todos, { id: Date.now().toString(), title: action.title } ]  }
+  ),
+  DEFAULT: state => state    
+}
+
+export const todoReducer = (state, action) => {
+  const handler = handlers[action.type] || handlers.DEFAULT
+  return handler(state, action)
+}
+
+
+3. Пример использования в компоненте:
+
+import React, { useContext } from 'react'
+import { TodoContext } from 'src/components/context/todo/TodoState'
+
+const { todos, addTodo } = useContext(TodoContext)
+
+ТЕПЕРЬ МЫ МОЖЕМ ИСПОЛЬЗОВАТЬ ДАННЫЕ ИЗ МАССИВА todos И ИЗМЕНЯТЬ ЕГО С ПОМОЩЬЮ МЕТОДА addTodo(title)

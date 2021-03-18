@@ -1,0 +1,60 @@
+Продвинутую структуру компонента можно собрать с помощью сниппета, набрав rnce в vscode
+
+1. БАЗОВАЯ СТРУКТУРА
+
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, Text, View, Alert, Button } from "react-native";
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Text style={{color: '#fff'}}>First project</Text>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+
+// компонент StatusBar определяет стиль элементов интерфейса самого телефона в приложении, т.е. отображения 
+// времени и батареи в верхней части экрана. например, при значении <StatusBar style="light" /> эти элементы будут белыми.
+
+// StatusBarAnimation
+// A string, either: 'none', 'fade', or 'slide'.
+// StatusBarProps
+// See the props of the StatusBar component.
+// StatusBarStyle
+// A string, either: 'auto', 'inverted', 'light', or 'dark'
+
+
+2. ПРОДВИНУТАЯ СТРУКТУРА
+
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+
+class NavBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+  render() {
+    return (
+      <View>
+        <Text> NavBar </Text>
+      </View>
+    );
+  }
+}
+
+export default NavBar;

@@ -1,0 +1,15 @@
+    Alert.alert('Remove todo?', '', [
+      { text: "Cancel" },
+      { text: "OK", onPress: () => {
+        setTodoId(null)
+        setTodos(prev => prev.filter(todo => todo.id !== id))
+        },
+        style: 'destructive'
+    }
+      ],
+      { cancelable: true });
+
+// свойство style: 'destructive' окрашивает соотвутствующую кнопку в красный цвет НА IOS.
+
+// свойство cancelable при передаче true закрывает алерт при нажатии на область вне алерта. Работает только на android.
+

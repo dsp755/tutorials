@@ -1,0 +1,18 @@
+1. Хук useEffect служит для вызова нужной функции при загрузке, выгрузке и обновлении страницы.
+Во Vue похожий хук - mounted.
+
+Вторым аргументом идет массив, в который входят переменные, за которыми useEffect будет следить.
+При любом изменении этих переменных useEffect будет срабатывать.
+Если вторым аргументом в этот хук передать пустой массив [], хук сработает только один раз.
+
+import React, { useEffect, useCallback } from "react";
+
+export const MainScreen = () => {
+  const { fetchTodos } = useContext(TodoContext)
+
+  const loadTodos = useCallback(async () => fetchTodos(), [fetchTodos])
+
+  useEffect(() => {
+    loadTodos()
+  }, [])
+

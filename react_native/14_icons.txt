@@ -1,0 +1,19 @@
+1. бесплатные иконки, встроенные в expo, доступны по адресу https://icons.expo.fyi/
+
+
+2. Установка:
+
+npm install @expo/vector-icons
+
+
+3. Вставка в разметку
+
+import { Entypo } from '@expo/vector-icons';  // вместо Entypo может быть другой набор иконок. нужно смотреть по https://icons.expo.fyi/
+
+<Entypo name="compass" size={24} color="black" />
+
+
+4. Иконка + кнопка":
+
+<Entypo.Button name="compass" size={24} color="black"> Какой-то текст </Entypo.Button>
+

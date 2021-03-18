@@ -1,0 +1,34 @@
+1. НАСТРОЙКА СМЕНЫ ОРИЕНТАЦИИ ДЛЯ ЭМУЛЯТОРОВ
+
+В файле app.json есть запись "orientation": "portrait"
+
+Если мы заменим "portrait" на "default", эмуляторы начнут реагировать на смену ориентации телефона
+и переворавичать верстку в соответствии с ориентацией.
+
+
+2. Обновление переменных стиля по событию поворота экрана
+
+import React, { useState, useEffect } from 'react';
+
+
+export const Todo = ({ todo, removeTodo, onOpen }) => {
+
+  const [deviceWidth, setDeviceWidth] = useState(Dimensions.get('window').width - Dimensions.get('window').width / 5)
+
+  useEffect(() => {
+    const update = () => {
+      const width = Dimensions.get('window').width - Dimensions.get('window').width / 5
+      setDeviceWidth(width)
+    }
+
+    Dimensions.addEventListener('change', update)
+
+    // return activates when user closes the component (e.g. goes to another component)
+    return () => {
+      Dimensions.removeEventListener('change', update)
+    }
+  })
+
+
+return срабатывает, когда пользователь закрывает данный компонент (напр. переходит на следующий)
+

@@ -1,0 +1,32 @@
+1. Чтобы использовать глобальные хуки в файле роутера, роутеру должна быть
+присвоена переменная: 
+
+const router = new Router({ ... })
+
+Далее в том же файле роутера мы можем задавать глобальные хуки для всех роутов: 
+
+router.beforeEach((to, from, next) => {
+  ... do something
+  next()
+})
+
+router.afterEach((to, from, next) => {
+  ... do something
+})
+
+
+2. Порядок выполнения хуков
+
+1) router.beforeEach (в файле роутера)
+
+2) beforeEnter (в файле роутера)
+
+3) beforeRouteEnter, если он есть в export default компонента, вызовется сразу после beforeEnter 
+
+4) route.afterEach (в файле роутера)
+
+5) beforeCreate() (в компоненте)
+
+6) created() (в компоненте)
+
+

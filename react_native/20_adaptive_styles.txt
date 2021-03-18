@@ -1,0 +1,14 @@
+1. Компонент Dimensions:
+
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
+
+const styles = StyleSheet.create({
+  todo: {
+    width: Dimensions.get('window').width - Dimensions.get('window').width / 5,
+  }
+
+
+2. Dimensions и тернарный оператор
+
+width: Dimensions.get('window).width > 400 ? 300 : 140
+

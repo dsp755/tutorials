@@ -1,0 +1,46 @@
+1. Настройки стиля вроде цветов есть смысл хранить в переменных в отдельном файле.
+
+Например, можно создать файл src/styles/theme.js
+
+В этом файле описываем нужные свойства стилей:
+
+export const THEME = {
+  MAIN_COLOR: '#3949ab',
+  RED_COLOR: '#C42021',
+}
+
+
+Далее импортируем этот объект в нужные нам компоненты и используем:
+
+import { THEME } from "../styles/theme";
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: THEME.MAIN_COLOR,
+  },
+})
+
+
+2. Стили для самописных компонентов.
+
+Если мы самостоятельно создаем компонент, например <MyComponent />, он не может принимать стили из StyleSheet.create({ ... })
+
+Однако он может принимать стили через пропсы:
+
+В родительском компоненте мы привязываем к нему пропс со стилем <MyComponent style={{backgroundColor: 'black'}}
+
+Теперь в самом компоненте MyComponent мы можем использовать эти стили, например, на его корневом элементе View:
+
+export const MyComponent = props => {
+  return (
+    <View style={{...props.style}}>
+  )
+}
+
+
+3. shadows
+
+Для ios работают свойства shadowColor, shadowOffset, shadowOpacity, shadowRadius.
+
+Для android работает свойство elevation.
+

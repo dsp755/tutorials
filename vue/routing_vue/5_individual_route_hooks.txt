@@ -1,0 +1,16 @@
+1. Установка хуков для каждого отдельного роута
+
+    {
+      path: '/event/:id',
+      name: 'event-show',
+      component: EventShow,
+      props: true,
+      beforeEnter(routeTo, routeFrom, next) {       <--- этот хук будет срабатывать только для этого роута
+        NProgress.start()
+        store.dispatch('event/fetchEvent', routeTo.params.id).then(() => {   <--- в файл роутера должен быть импортирован store
+        NProgress.done()
+        next()
+        })  
+      },
+    }
+

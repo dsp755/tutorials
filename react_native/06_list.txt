@@ -1,0 +1,15 @@
+1. В react-native есть компонент FlatList, который позволяет настраивать и отображать списки.
+
+Пример FlatList:
+
+        <FlatList 
+        keyExtractor={item => item.id.toString()}
+        data={todos}
+        renderItem={({ item }) => <Todo todo={item} />}
+        />
+          
+ВНИМАНИЕ
+
+keyExtractor требует, чтобы id передавался строкой, а не числом.
+Для этого нужно id обработать с помощью метода .toString()
+

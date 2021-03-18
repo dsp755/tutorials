@@ -1,0 +1,17 @@
+1. Чтобы управлять поведением клавиатуры, необходимо импортировать компонент Keyboard:
+
+import { View, StyleSheet, Keyboard } from 'react-native'
+
+
+2. Теперь нам доступен компонент Keyboard и его методы, которые мы можем использовать в функциях-обработчиках, например:
+
+  const pressHandler = () => {
+    if (value.trim()) {
+      onSubmit(value)
+      setValue('')  
+      Keyboard.dismiss()
+    }
+  }
+
+При этом клавиатура скроется, когда будет вызвана функция pressHandler()
+

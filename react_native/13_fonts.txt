@@ -1,0 +1,76 @@
+1. Скачиваем шрифт в папку приложения. Например, в assets/fonts
+
+
+2. npm install expo-font
+
+
+3. В корневом компоненте приложения, например в App.js импортируем:
+
+import * as FONT from 'expo-font'
+
+
+4. Так как приложение рендерится сразу, а шрифты загружаются после, момент изменения шрифтов может быть заметен.
+Чтобы этого избежать, лучше производить загрузку шрифтов асинхронно.
+В том же корневом файле приложения, где мы импортировали expo-font, создаем следующую асинхронную функцию:
+
+const loadApp = async () => {
+  await FONT.loadAsync({
+    'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf')
+  })
+}
+
+
+5. Создаем стейт, который проверяет, все ли шрифты загрузились:
+
+const [appReady, setAppReady] = useState(false)
+
+
+6. Устанавливаем зависимость и импортируем компонент для асинхронной загрузки приложения:
+ 
+npm install expo-app-loading
+ 
+import AppLoading from 'expo-app-loading';
+
+
+7. Прописываем следующее условие - пока не загрузились все шрифты, показывать компонент-заглушку <AppLoading />:
+
+  if (!appReady) { 
+    return (
+      <AppLoading 
+        startAsync={loadApp}               // здесь проверяется, все ли загрузилось в асинхронной функции loadApp. если да, то срабатывает onFinish
+        onError={err => console.log(err)} 
+        onFinish={setAppReady(true)} 
+      />
+    )
+  }
+
+
+8. Примерная структура:
+
+import * as FONT from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+const loadApp = async () => {
+  await FONT.loadAsync({
+    'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf')
+  })
+}
+
+export default function App() {
+  const [appReady, setAppReady] = useState(false)
+
+  if (!appReady) { 
+    return (
+      <AppLoading 
+        startAsync={loadApp} 
+        onError={err => console.log(err)} 
+        onFinish={setAppReady(true)} 
+      />
+    )
+  }
+
+
+9. В стилях к нужному компоненту прописываем, например, fontFamily: 'roboto-bold'
+

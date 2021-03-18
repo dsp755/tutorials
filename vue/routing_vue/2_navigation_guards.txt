@@ -1,0 +1,36 @@
+1. Три основных внутрикомпонентных хука
+
+beforeRouteEnter(to, from, next)
+- вызывается до создание нового компонента
+- на этом этапе у нас нет доступа к this, т.к. компонент еще не создан
+
+beforeRouteUpdate(to, from, next)
+- вызывается при изменении роута
+- есть доступ к this
+
+beforeRouteLeave(to, from, next)
+- вызывается при покидании роута
+- есть доступ к this
+
+next() должна вызываться в каждом хуке для продолжения навигации
+
+next(false) прерывает навигацию
+
+next('/') перебрасывает на этот роут
+
+next({ name: 'event-list' }) перебрасывает на указанный роут по его названию
+
+
+ПРИМЕР beforeRouteLeave 
+
+    beforeRouteLeave(routeTo, routeFrom, next) {
+      const answer = window.confirm(
+        'Do you really want to leave? You have unsaved changes!'
+      )
+      if (answer) {
+        next() // <-- Confirms the navigation
+      } else {
+        next(false) // <-- Cancels the navigation
+      }
+    },
+

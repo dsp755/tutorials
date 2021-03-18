@@ -1,0 +1,28 @@
+1. Для отображения pop-up элементов в react native существует компонент <Modal>
+
+Управление открытием/закрытием этого окна осуществляется через useState и элемент <Pressable>:
+
+  const [modalVisible, setModalVisible] = useState(false);
+  return (
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View>
+          ...
+        </View>
+      </Modal>
+      
+      <Pressable
+        onPress={() => setModalVisible(true)}
+      >
+        <Text>Show Modal</Text>
+      </Pressable>
+  )
+
